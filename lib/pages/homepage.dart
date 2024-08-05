@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:walmart_sparkathon_2024/colors.dart';
+import 'package:walmart_sparkathon_2024/components/dialoguebox.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,13 +10,34 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FocusNode _focusNode = FocusNode();
+  bool _isFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(() {
+      _isFocused = _focusNode.hasFocus;
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xfffe3737).withOpacity(0.3),
+        backgroundColor: c1.withOpacity(0.3),
         actions: [
-          CircleAvatar(),
+          const CircleAvatar(),
           SizedBox(
             width: MediaQuery.sizeOf(context).width * 0.01,
           )
@@ -24,12 +47,17 @@ class _HomePageState extends State<HomePage> {
         width: MediaQuery.sizeOf(context).width * 0.2,
         backgroundColor: const Color(0xfffef7ff),
       ),
-      body: const SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Row(
-          children: [SideBar()],
-        ),
+      body: Stack(
+        children: [
+          const SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Row(
+              children: [SideBar()],
+            ),
+          ),
+          DialogueBox(isFocused: _isFocused, focusNode: _focusNode)
+        ],
       ),
     );
   }
