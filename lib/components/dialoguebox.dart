@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:walmart_sparkathon_2024/colors.dart';
+import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
 class DialogueBox extends StatelessWidget {
   const DialogueBox({
