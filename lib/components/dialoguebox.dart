@@ -6,7 +6,8 @@ class DialogueBox extends StatelessWidget {
     super.key,
     required bool isFocused,
     required FocusNode focusNode,
-  }) : _isFocused = isFocused, _focusNode = focusNode;
+  })  : _isFocused = isFocused,
+        _focusNode = focusNode;
 
   final bool _isFocused;
   final FocusNode _focusNode;
@@ -44,14 +45,14 @@ class DialogueBox extends StatelessWidget {
               ),
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () => {},
-                    color: _isFocused ? c1 : Colors.black,
-                    icon: const Icon(
-                      Icons.mic,
-                    ),
-                  ),
-                  const VerticalDivider(),
+                  // IconButton(
+                  //   onPressed: () => {},
+                  //   color: _isFocused ? c1 : Colors.black,
+                  //   icon: const Icon(
+                  //     Icons.mic,
+                  //   ),
+                  // ),
+                  // const VerticalDivider(),
                   IconButton(
                     onPressed: () {},
                     color: _isFocused ? c1 : Colors.black,
