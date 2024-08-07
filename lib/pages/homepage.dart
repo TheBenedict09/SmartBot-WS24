@@ -4,6 +4,8 @@ import 'package:walmart_sparkathon_2024/components/sidebar.dart';
 import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 import 'package:walmart_sparkathon_2024/components/dialoguebox.dart';
 
+import '../components/productrecommendation.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -62,23 +64,8 @@ class _HomePageState extends State<HomePage> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // SideBar(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: c1,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
+                SideBar(),
+                
               ],
             ),
           ),
@@ -90,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               // color: Colors.amber,
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return const BotMessage();
+                  return ProductRecommendation();
                 },
                 separatorBuilder: (context, index) {
                   return SizedBox(
