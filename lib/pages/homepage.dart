@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _sendMessage(String message) async {
     setState(() {
       _messages.add(UserMessage(message: message));
-      _isLoading = true; // Start loading animation
+      _isLoading = true;
     });
 
     final String apiUrl =
@@ -112,15 +112,15 @@ class _HomePageState extends State<HomePage> {
             height: double.infinity,
             child: Image.asset("images/BG.png", fit: BoxFit.cover),
           ),
-          if (_isLoading) // Show Lottie animation while loading
+          if (_isLoading)
             Center(
-              child: Lottie.asset(
-                  'assets/animation.json'), // Replace with your animation asset
+              child: Lottie.asset('animations/loading.json', width: 300),
             ),
           Positioned(
-            left: MediaQuery.of(context).size.width * 0.12,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
+            left: MediaQuery.of(context).size.width * 0.14,
+            child: Container(
+              // color: Colors.black,
+              width: MediaQuery.of(context).size.width * 0.72,
               height: MediaQuery.of(context).size.height * 0.75,
               child: ListView.separated(
                 itemBuilder: (context, index) => _messages[index],

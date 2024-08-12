@@ -12,25 +12,33 @@ class UserMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.sizeOf(context).width * 0.7, // Adjust width as needed
+            maxWidth: MediaQuery.sizeOf(context).width *
+                0.7, // Adjust width as needed
           ),
-          padding: const EdgeInsets.all(10.0), // Added padding inside the container
-          decoration: BoxDecoration(
-            color: c1,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(23),
+          padding: const EdgeInsets.all(10.0),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                spreadRadius: 0.02,
+                blurRadius: 1,
+                offset: Offset(0, 1),
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(23),
               bottomRight: Radius.circular(23),
               bottomLeft: Radius.circular(23),
             ),
           ),
           child: Text(
             message,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),
