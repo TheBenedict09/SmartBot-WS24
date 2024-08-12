@@ -1,16 +1,37 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:walmart_sparkathon_2024/components/botmessage.dart';
+import 'package:walmart_sparkathon_2024/components/productrecommendation.dart';
 import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
-class DialogueBox extends StatelessWidget {
+class DialogueBox extends StatefulWidget {
   const DialogueBox({
     super.key,
-    required bool isFocused,
-    required FocusNode focusNode,
-  })  : _isFocused = isFocused,
-        _focusNode = focusNode;
+    required this.isFocused,
+    required this.focusNode,
+    required this.controller,
+    required this.onSend,
+  });
 
-  final bool _isFocused;
-  final FocusNode _focusNode;
+  final bool isFocused;
+  final FocusNode focusNode;
+  final TextEditingController controller;
+  final Function(String) onSend;
+
+  @override
+  _DialogueBoxState createState() => _DialogueBoxState();
+}
+
+class _DialogueBoxState extends State<DialogueBox> {
+  Future<void> _sendMessage() async {
+    final String query = widget.controller.text;
+    if (query.isEmpty) return;
+
+    widget.onSend(query); // Pass query to the parent function
+
+    widget.controller.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +47,7 @@ class DialogueBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(22),
           border: Border.all(
             width: 1,
-            color: _isFocused ? c1 : Colors.black,
+            color: widget.isFocused ? c1 : Colors.black,
           ),
         ),
         child: Padding(
@@ -35,7 +56,8 @@ class DialogueBox extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
-                  focusNode: _focusNode,
+                  controller: widget.controller,
+                  focusNode: widget.focusNode,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: "Ask Me Anything...",
@@ -45,23 +67,15 @@ class DialogueBox extends StatelessWidget {
               ),
               Row(
                 children: [
-                  // IconButton(
-                  //   onPressed: () => {},
-                  //   color: _isFocused ? c1 : Colors.black,
-                  //   icon: const Icon(
-                  //     Icons.mic,
-                  //   ),
-                  // ),
-                  // const VerticalDivider(),
                   IconButton(
-                    onPressed: () {},
-                    color: _isFocused ? c1 : Colors.black,
+                    onPressed: _sendMessage,
+                    color: widget.isFocused ? c1 : Colors.black,
                     icon: const Icon(
                       Icons.send,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

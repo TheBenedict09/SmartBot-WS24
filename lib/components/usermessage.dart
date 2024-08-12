@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
 class UserMessage extends StatelessWidget {
+  final String message; // Added to hold the message text
+
   const UserMessage({
     super.key,
+    required this.message, // Required parameter
   });
 
   @override
@@ -13,8 +16,10 @@ class UserMessage extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          width: MediaQuery.sizeOf(context).width * 0.2,
-          height: MediaQuery.sizeOf(context).height * 0.1,
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.sizeOf(context).width * 0.7, // Adjust width as needed
+          ),
+          padding: const EdgeInsets.all(10.0), // Added padding inside the container
           decoration: BoxDecoration(
             color: c1,
             borderRadius: const BorderRadius.only(
@@ -22,6 +27,10 @@ class UserMessage extends StatelessWidget {
               bottomRight: Radius.circular(23),
               bottomLeft: Radius.circular(23),
             ),
+          ),
+          child: Text(
+            message,
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),

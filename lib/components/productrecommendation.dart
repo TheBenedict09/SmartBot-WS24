@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import the url_launcher package
 import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
 class ProductRecommendation extends StatelessWidget {
   const ProductRecommendation({
     super.key,
+    required this.title,
+    required this.image,
+    required this.price,
+    required this.url,
   });
+
+  final String title;
+  final String image;
+  final String price;
+  final String url;
+
+  // Function to launch the URL
+  Future<void> _launchURL() async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +31,6 @@ class ProductRecommendation extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Container(
         width: MediaQuery.sizeOf(context).width * 0.13,
-        // height: MediaQuery.sizeOf(context).height * 0.3,
         decoration: BoxDecoration(
           border: Border.all(color: c1),
           borderRadius: BorderRadius.circular(12),
@@ -25,32 +43,28 @@ class ProductRecommendation extends StatelessWidget {
               child: SizedBox(
                 width: MediaQuery.sizeOf(context).width * 0.1,
                 height: MediaQuery.sizeOf(context).height * 0.23,
-                // color: Colors.amber,
                 child: Image.network(
-                    fit: BoxFit.contain,
-                    "https://store.storeimages.cdn-apple.com/1/as-images.apple.com/is/MT3D3ref_VW_34FR+watch-case-44-aluminum-midnight-cell-se_VW_34FR+watch-face-44-aluminum-midnight-se_VW_34FR?wid=752&hei=720&bgc=fafafa&trim=1&fmt=p-jpg&qlt=80&.v=ajJYOEQxYjNlejNwbWNnSU16d0NYaWhSbVIzRFJTYlp1MEk4OWNDaTcvNTlEbzMrd1Z5SUpEd0hiT0ZLRlZGNHVDTzRRaC84T1VMbXJRN05SRldIelBRWnNWZWtLcTZCYVRER3FsWWowaTk5RG8zK3dWeUlKRHdIYk9GS0ZWRjR4cVNUNDJadDNVSmRncE9SalAvZ24zZmdHMUt6VFlqa3BpV2VBOUNycGdrcDIxSk5peW5HTWQ0c004MmJwMkNtdGl6SHg4ZE5NYmlWSVQ5akRTdGpCZkNDUmN0SlpnYXpQNFNTbUVsbTlnST0="),
+                  image,
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.all(8.0),
-                child: Text(
-                  "Product Name",
-                ),
+                child: Text(title),
               ),
             ),
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.only(top: 8.0, left: 8),
-                child: Text(
-                  "\$///",
-                ),
+                child: Text(price),
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: _launchURL, // Use the _launchURL function
               child: Text(
                 "Buy",
                 style: TextStyle(color: c1, fontSize: 17),
