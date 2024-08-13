@@ -18,8 +18,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _textController = TextEditingController();
-  final ScrollController _scrollController =
-      ScrollController(); // ScrollController added
+  final ScrollController _scrollController = ScrollController();
   bool _isFocused = false;
   bool _isLoading = false;
   List<Widget> _messages = [];
@@ -40,7 +39,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _focusNode.dispose();
     _textController.dispose();
-    _scrollController.dispose(); // Dispose the ScrollController
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -50,11 +49,17 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
 
-    // Scroll to bottom after adding the message
     _scrollToBottom();
 
+    List<String> parts = message.split(' ');
+
+    String query = parts.isNotEmpty ? parts[0] : '';
+    double minPrice = parts.length > 1 ? double.tryParse(parts[1]) ?? 0.0 : 0.0;
+    double maxPrice =
+        parts.length > 2 ? double.tryParse(parts[2]) ?? 10000.0 : 10000.0;
+
     final String apiUrl =
-        'http://107.21.134.59/search?query=$message&min_price=500&max_price=10000';
+        'http://107.21.134.59/search?query=$query&min_price=$minPrice&max_price=$maxPrice';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -66,7 +71,6 @@ class _HomePageState extends State<HomePage> {
             _messages.add(
               ProductRecommendation(
                 title: data['productName'],
-                image: data['productImage'],
                 price: data['productPrice'],
                 url: data['purchaseURL'],
               ),
@@ -91,7 +95,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _isLoading = false;
       });
-      // Scroll to bottom after receiving the response
       _scrollToBottom();
     }
   }
@@ -144,7 +147,7 @@ class _HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width * 0.72,
               height: MediaQuery.of(context).size.height * 0.75,
               child: ListView.separated(
-                controller: _scrollController, // Attach the ScrollController
+                controller: _scrollController,
                 itemBuilder: (context, index) => _messages[index],
                 separatorBuilder: (context, index) => SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.01,
