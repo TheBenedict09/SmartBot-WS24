@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
 class UserMessage extends StatelessWidget {
   final String message; // Added to hold the message text
@@ -15,7 +14,9 @@ class UserMessage extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Container(
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 5),
+          
           constraints: BoxConstraints(
             maxWidth: MediaQuery.sizeOf(context).width *
                 0.7, // Adjust width as needed

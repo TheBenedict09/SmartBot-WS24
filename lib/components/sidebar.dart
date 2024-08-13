@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({
@@ -28,12 +27,12 @@ class SideBar extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Color(0xffffd8e4),
+                color: const Color(0xffffd8e4),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.add,
                   // color: Colors.white,
                 ),

@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart'; // Import Lottie package
+import 'package:lottie/lottie.dart';
 import 'package:walmart_sparkathon_2024/components/botmessage.dart';
-import 'package:walmart_sparkathon_2024/components/sidebar.dart';
 import 'package:walmart_sparkathon_2024/components/usermessage.dart';
 import 'package:walmart_sparkathon_2024/utilities/colors.dart';
 import 'package:walmart_sparkathon_2024/components/dialoguebox.dart';
@@ -19,8 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FocusNode _focusNode = FocusNode();
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController =
+      ScrollController(); // ScrollController added
   bool _isFocused = false;
-  bool _isLoading = false; // Track loading state
+  bool _isLoading = false;
   List<Widget> _messages = [];
 
   @override
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _focusNode.dispose();
     _textController.dispose();
+    _scrollController.dispose(); // Dispose the ScrollController
     super.dispose();
   }
 
@@ -48,8 +50,11 @@ class _HomePageState extends State<HomePage> {
       _isLoading = true;
     });
 
+    // Scroll to bottom after adding the message
+    _scrollToBottom();
+
     final String apiUrl =
-        'http://localhost:5000/search?query=$message&min_price=500&max_price=1500';
+        'http://107.21.134.59/search?query=$message&min_price=500&max_price=10000';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -84,9 +89,23 @@ class _HomePageState extends State<HomePage> {
       });
     } finally {
       setState(() {
-        _isLoading = false; // Stop loading animation
+        _isLoading = false;
       });
+      // Scroll to bottom after receiving the response
+      _scrollToBottom();
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
@@ -95,7 +114,10 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: c1.withOpacity(0.3),
         actions: [
-          const CircleAvatar(),
+          const CircleAvatar(
+            backgroundImage: AssetImage('images/logo.png'),
+            backgroundColor: Colors.transparent,
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.01,
           )
@@ -118,11 +140,11 @@ class _HomePageState extends State<HomePage> {
             ),
           Positioned(
             left: MediaQuery.of(context).size.width * 0.14,
-            child: Container(
-              // color: Colors.black,
+            child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.72,
               height: MediaQuery.of(context).size.height * 0.75,
               child: ListView.separated(
+                controller: _scrollController, // Attach the ScrollController
                 itemBuilder: (context, index) => _messages[index],
                 separatorBuilder: (context, index) => SizedBox(
                   height: MediaQuery.sizeOf(context).height * 0.01,
