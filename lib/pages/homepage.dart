@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_final_fields
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -51,15 +53,8 @@ class _HomePageState extends State<HomePage> {
 
     _scrollToBottom();
 
-    List<String> parts = message.split(' ');
-
-    String query = parts.isNotEmpty ? parts[0] : '';
-    double minPrice = parts.length > 1 ? double.tryParse(parts[1]) ?? 0.0 : 0.0;
-    double maxPrice =
-        parts.length > 2 ? double.tryParse(parts[2]) ?? 10000.0 : 10000.0;
-
-    final String apiUrl =
-        'http://107.21.134.59/search?query=$query&min_price=$minPrice&max_price=$maxPrice';
+    // Pass the original message directly to the API
+    final String apiUrl = 'http://127.0.0.1:5000/search?query=$message';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -67,19 +62,24 @@ class _HomePageState extends State<HomePage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
         if (!data['error']) {
-          setState(() {
-            _messages.add(
-              ProductRecommendation(
-                title: data['productName'],
-                price: data['productPrice'],
-                url: data['purchaseURL'],
-              ),
-            );
-          });
+          setState(
+            () {
+              _messages.add(
+                ProductRecommendation(
+                  title: data['productName'],
+                  price: data['productPrice'].toString(),
+                  url: data['purchaseURL'],
+                  imageUrl: data['productImage'],
+                ),
+              );
+            },
+          );
         } else {
-          setState(() {
-            _messages.add(const BotMessage(message: 'No products found.'));
-          });
+          setState(
+            () {
+              _messages.add(const BotMessage(message: 'No products found.'));
+            },
+          );
         }
       } else {
         setState(() {
@@ -87,6 +87,7 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
+      print(e.toString());
       setState(() {
         _messages
             .add(const BotMessage(message: 'Failed to connect to the server.'));
